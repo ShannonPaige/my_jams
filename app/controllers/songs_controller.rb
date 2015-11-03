@@ -3,7 +3,7 @@ class SongsController < ApplicationController
 
   def index
     @songs = Song.all
-    session[:most_recent_song_id] = @songs.last.id
+    session[:most_recent_song_id] = @songs.last.id if @songs.last
   end
 
   def show
