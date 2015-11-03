@@ -3,6 +3,7 @@ class SongsController < ApplicationController
 
   def index
     @songs = Song.all
+    session[:most_recent_song_id] = @songs.last.id
   end
 
   def show
@@ -16,8 +17,10 @@ class SongsController < ApplicationController
   def create
     @song = Song.new(song_params)
     if @song.save
-      redirect_to song_path(@song)
+      flash[:notice] = "You successfully created a song"
+      redirect_to songs_path
     else
+      flash[:errors] = "Must enter a song and title"
       render :new
     end
   end
@@ -27,17 +30,20 @@ class SongsController < ApplicationController
   end
 
   def update
-    @song = Song.find(song_param)
+    @song = Song.find(params[:id])
     if @song.update(song_params)
-      redirect_to song_path(@song)
+      flash[:notice] = "You successfully updated this song"
+      redirect_to songs_path
     else
+      flash[:errors] = @song.errors.full_messages.join(', ')
       render :edit
     end
   end
 
   def destroy
-    @song = Song.find(song_params)
+    @song = Song.find(params[:id])
     @song.destroy
+      flash[:notice] = "You successfully deleted this song"
     redirect_to songs_path
   end
 end
