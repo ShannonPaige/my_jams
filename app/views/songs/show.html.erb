@@ -2,7 +2,8 @@
 <%= @song.title %>
 </h1>
 <h2>
-<%= @song.artist %>
+<%= @song.artist %><br />
+<%= @song.category.subject %>
 </h2>
 <p>
   <%= link_to '<< Back', songs_path %>
